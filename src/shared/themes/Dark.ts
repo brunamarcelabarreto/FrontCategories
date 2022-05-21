@@ -12,10 +12,10 @@ export const DarkTheme = createTheme({
       dark: 'rgb(246,214,214)',
       light: 'rgb(250,234,234)',
       contrastText: '#000000',
-  },
-  background: {
-    default: '#cccccc' ,
-    paper: '#d6d6d6',
-  },
-}
-})
+    },
+    background: {
+      default: '#cccccc' ,
+      paper: '#d6d6d6',
+    },
+  }
+});

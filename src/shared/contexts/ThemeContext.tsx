@@ -1,7 +1,8 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider } from '@mui/material';
 
-import { DarkTheme, LightTheme } from "./../themes";
+import { DarkTheme, LightTheme } from './../themes';
 import { Box } from '@mui/system';
 import { ThemeContext } from './UseContext';
 
@@ -23,6 +24,7 @@ interface ThemeContextDataProps {
 //   return useContext(ThemeContext);
 // }
 
+// eslint-disable-next-line react/prop-types
 export const AppThemeProvider: React.FC<ThemeContextDataProps> = ({ children }) => {
   const [themeName, setThemeName] = useState<'light' | 'dark'>('light');
 
@@ -40,9 +42,9 @@ export const AppThemeProvider: React.FC<ThemeContextDataProps> = ({ children }) 
     <ThemeContext.Provider value={{ themeName, toggleTheme }}>
       <ThemeProvider theme={theme}>
         <Box width="100vw" height="100vh" bgcolor={theme.palette.background.default}>
-        {children}
+          {children}
         </Box>
       </ThemeProvider>
     </ThemeContext.Provider>
   );
-}
+};

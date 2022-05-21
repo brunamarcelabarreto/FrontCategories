@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 
 interface ThemeContextData {
@@ -11,4 +11,4 @@ export const ThemeContext = createContext({} as ThemeContextData);
 
 export const useAppThemeContext = () => {
   return useContext(ThemeContext);
-}
+};
