@@ -3,6 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useDrawerContext } from '../../contexts';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 import { Key } from 'react';
+import { useAppThemeContext } from '../../contexts/UseContext';
 
 interface MenuLateralProps {
   children: React.ReactNode
@@ -43,6 +44,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const lessThanSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
+  const { toggleTheme } = useAppThemeContext();
 
   return (
     <>
@@ -75,6 +77,16 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
             </List>
           </Box>
 
+          <Box >
+            <List component="nav">
+              <ListItemButton onClick={toggleTheme}>
+                <ListItemIcon>
+                  <Icon>dark_mode</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Alternar tema" />
+              </ListItemButton>
+            </List>
+          </Box>
         </Box>
       </Drawer>
       <Box height="100vh" marginLeft={lessThanSm ? 0 : theme.spacing(28)}>
