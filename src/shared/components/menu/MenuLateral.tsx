@@ -1,7 +1,8 @@
 import { Avatar, Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useDrawerContext } from '../../contexts/UseDrawerContext';
-import { useNavigate } from 'react-router-dom';
+import { useDrawerContext } from '../../contexts';
+import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
+import { Key } from 'react';
 
 interface MenuLateralProps {
   children: React.ReactNode
@@ -18,13 +19,16 @@ interface ListItemLinkProps {
 export const ListItemLink: React.FC<ListItemLinkProps> = ({ to, icon, label, onClick }) => {
   const navigate = useNavigate();
 
+  const resolvedPath = useResolvedPath(to);
+  const match = useMatch({ path: resolvedPath.pathname, end: false });
+
   const handleClick = () => {
     navigate(to);
     onClick?.();
   };
 
   return (
-    <ListItemButton onClick={handleClick}>
+    <ListItemButton selected={!!match} onClick={handleClick}>
       <ListItemIcon>
         <Icon>{icon}</Icon>
       </ListItemIcon>
@@ -38,9 +42,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const theme = useTheme();
   const lessThanSm = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
-
-
+  const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
 
   return (
     <>
@@ -61,12 +63,15 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
 
           <Box flex={1}>
             <List component="nav">
-              <ListItemLink
-                to='/home'
-                label='Home'
-                icon='home'
-                onClick={lessThanSm? toggleDrawerOpen : undefined}
-              />
+              {drawerOptions.map(drawerOption => (
+                <ListItemLink
+                  key={drawerOption.path}
+                  icon={drawerOption.icon}
+                  to={drawerOption.path}
+                  label={drawerOption.label}
+                  onClick={lessThanSm? toggleDrawerOpen : undefined}
+                />
+              ))}
             </List>
           </Box>
 
@@ -78,3 +83,4 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
     </>
   );
 };
+
