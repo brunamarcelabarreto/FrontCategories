@@ -63,7 +63,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
 
           <Divider />
 
-          <Box flex={1}>
+          <Box>
             <List component="nav">
               {drawerOptions.map(drawerOption => (
                 <ListItemLink
@@ -77,7 +77,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
             </List>
           </Box>
 
-          <Box >
+          <Box>
             <List component="nav">
               <ListItemButton onClick={toggleTheme}>
                 <ListItemIcon>
