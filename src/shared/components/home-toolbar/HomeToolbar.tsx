@@ -1,8 +1,17 @@
-import { Box, Button, Paper, TextField, useTheme } from '@mui/material';
+import { Box, Button, Icon, Paper, TextField, useTheme } from '@mui/material';
 
 
+interface ToolbarProps {
+  textSearch?: string;
+  showInputSearch?: boolean;
+  switchTextSearch?:(newText: string) => void; 
+}
 
-export const HomeToolbar: React.FC = () => {
+export const HomeToolbar: React.FC<ToolbarProps> = ({ 
+  textSearch ='',
+  showInputSearch= false,
+  switchTextSearch,
+}) => {
   const theme = useTheme();
 
   return (
@@ -18,9 +27,18 @@ export const HomeToolbar: React.FC = () => {
     >
       <TextField 
         size="small" 
+        value={textSearch}
+        placeholder="Pesquisar..."
+        onChange={(e) => switchTextSearch?.(e.target.value)}
       />
-
-      <Button>Novo</Button>
+      <Box flex={1} display="flex" justifyContent="end">
+        <Button
+          color='primary'
+          disableElevation
+          variant='contained'
+          endIcon={<Icon>add</Icon>}
+        >Novo</Button>
+      </Box>
     </Box>
   );
 };
