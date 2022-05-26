@@ -1,4 +1,5 @@
-import { HomeToolbar } from '../../shared/components';
+
+import { DetailTool } from '../../shared/components';
 import { BasePageLayout } from '../../shared/layouts';
 
 
@@ -9,8 +10,9 @@ export const Dashboard = () => {
     <BasePageLayout
       title='Página inicial' 
       toolBar={(
-        <HomeToolbar />
-      )}>
+        <DetailTool/>
+      )} 
+    >
       Testando
 
     </BasePageLayout>

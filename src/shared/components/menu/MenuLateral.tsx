@@ -1,9 +1,9 @@
-import { Avatar, Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
+import { Avatar, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useDrawerContext } from '../../contexts';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
-import { Key } from 'react';
 import { useAppThemeContext } from '../../contexts/UseContext';
+import { Box } from '@mui/system';
 
 interface MenuLateralProps {
   children: React.ReactNode
@@ -62,8 +62,8 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           </Box>
 
           <Divider />
-
-          <Box>
+          
+          <Box flex={1}>
             <List component="nav">
               {drawerOptions.map(drawerOption => (
                 <ListItemLink
@@ -71,12 +71,13 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
                   icon={drawerOption.icon}
                   to={drawerOption.path}
                   label={drawerOption.label}
-                  onClick={lessThanSm? toggleDrawerOpen : undefined}
+                  onClick={lessThanSm ? toggleDrawerOpen : undefined}
                 />
               ))}
             </List>
           </Box>
 
+        
           <Box>
             <List component="nav">
               <ListItemButton onClick={toggleTheme}>
@@ -87,7 +88,9 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
               </ListItemButton>
             </List>
           </Box>
+
         </Box>
+
       </Drawer>
       <Box height="100vh" marginLeft={lessThanSm ? 0 : theme.spacing(28)}>
         {children}
