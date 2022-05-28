@@ -10,7 +10,12 @@ export const Dashboard = () => {
     <BasePageLayout
       title='Página inicial' 
       toolBar={(
-        <DetailTool/>
+        <DetailTool 
+          showButtonNew
+          showButtonSaveAndReturn
+          showButtonBack
+          
+        />
       )} 
     >
       Testando

@@ -1,8 +1,53 @@
-import { Box, Button, Icon, Paper, useTheme } from '@mui/material';
+import { Box, Button, Divider, Icon, Paper, Skeleton, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 
+interface DetailToolProps {
+  newButtonText?: string;
 
-export const DetailTool: React.FC = () => {
+  showButtonSave?: boolean;
+  showButtonSaveAndReturn?: boolean;
+  showButtonDelete?: boolean;
+  showButtonNew?: boolean;
+  showButtonBack?: boolean;
+
+  showButtonSaveLoading?: boolean;
+  showButtonSaveAndReturnLoading?: boolean;
+  showButtonDeleteLoading?: boolean;
+  showButtonNewLoading?: boolean;
+  showButtonBackLoading?: boolean;
+
+  onClickInSave?: () => void;
+  onClickInSaveAndReturn?: () => void;
+  onClickInDelete?: () => void;
+  onClickInNew?: () => void;
+  onClickInBack?: () => void;
+}
+
+export const DetailTool: React.FC<DetailToolProps> = ({
+  newButtonText = 'Novo',
+  
+  showButtonSave = true,
+  showButtonSaveAndReturn = false,
+  showButtonDelete = true,
+  showButtonNew = true,
+  showButtonBack = true,
+
+  showButtonSaveLoading = false,
+  showButtonSaveAndReturnLoading = false,
+  showButtonDeleteLoading = false,
+  showButtonNewLoading = false,
+  showButtonBackLoading = false,
+
+
+  onClickInSave,
+  onClickInSaveAndReturn,
+  onClickInDelete,
+  onClickInNew,
+  onClickInBack,
+
+}) => {
+  const lessThanSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const lessThanMd = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const theme = useTheme();
 
   return (
@@ -16,13 +61,116 @@ export const DetailTool: React.FC = () => {
       height={theme.spacing(5)} 
       component={Paper}
     >
-      <Button
-        align-items="center"
-        color='primary'
-        disableElevation
-        variant='contained'
-        endIcon={<Icon>add</Icon>}
-      >Novo</Button>
+      {(showButtonSave && !showButtonSaveLoading) && (
+        <Button
+          color='primary'
+          disableElevation
+          variant='contained'
+          onClick={onClickInSave}
+          endIcon={<Icon>save</Icon>}
+        >
+          <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            <Box sx={{ marginTop: 0.3 }}>
+              Salvar
+            </Box>
+          </Typography>
+        </Button>
+      )}
+
+      {showButtonSaveLoading && (
+        <Skeleton width={110} height={64} />
+
+      )}
+
+      {(showButtonSaveAndReturn && !showButtonSaveAndReturnLoading && !lessThanSm && !lessThanMd) && (
+        <Button
+          color='primary'
+          disableElevation
+          variant='outlined'
+          onClick={onClickInSaveAndReturn}
+          endIcon={<Icon>save</Icon>}
+        >
+          <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            <Box sx={{ marginTop: 0.3 }}>
+            Salvar e voltar
+            </Box>
+          </Typography>
+        </Button>
+      )}
+
+      {(showButtonSaveAndReturnLoading && !lessThanSm && !lessThanMd) && (
+        <Skeleton width={170} height={64} />
+      )}
+
+      {(showButtonDelete && !showButtonDeleteLoading) && (
+        <Button
+          color='primary'
+          disableElevation
+          variant='outlined'
+          onClick={onClickInDelete}
+          endIcon={<Icon>delete_outline</Icon>}
+        >
+          <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            <Box sx={{ marginTop: 0.3 }}>
+              Apagar
+            </Box>  
+          </Typography>
+        </Button>
+      )}
+
+      {showButtonDeleteLoading && (
+        <Skeleton width={110} height={64} />
+      )}
+
+      {(showButtonNew && !showButtonNewLoading && !lessThanSm) && (
+        <Button
+          color='primary'
+          disableElevation
+          variant='outlined'
+          onClick={onClickInNew}
+          endIcon={<Icon>add</Icon>}
+        >
+          <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            <Box sx={{ marginTop: 0.3 }}>
+              {newButtonText}
+            </Box>
+          </Typography>
+        </Button>
+      )}
+
+      {(showButtonNewLoading && !lessThanSm) && (
+        <Skeleton width={110} height={64} />
+      )}
+
+      {/* {
+        (
+          showButtonBack &&
+          (showButtonNew || showButtonDelete || showButtonSave || showButtonSaveAndReturn)
+        ) && (
+          <Divider variant='middle' orientation='vertical' />
+        )
+      } */}
+
+      {(showButtonBack && !showButtonBackLoading) && (
+        <Button
+          color='primary'
+          disableElevation
+          variant='outlined'
+          onClick={onClickInBack}
+          endIcon={<Icon>arrow_back_ios_new</Icon>}
+        >
+          <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            <Box sx={{ marginTop: 0.3 }}>
+              Voltar
+            </Box>
+          </Typography>
+        </Button>
+      )}
+      
+      {showButtonBackLoading &&(
+        <Skeleton width={110} height={64} />
+      )}
+
     </Box>
   );
 };
