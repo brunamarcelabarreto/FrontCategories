@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Icon, Paper, TextField, useTheme } from '@mui/material';
 
+import { Environment } from '../../environment';
 
 
 interface ListingToolProps {
@@ -37,7 +38,7 @@ export const ListingTool: React.FC<ListingToolProps> = ({
         <TextField 
           size="small" 
           value={textSearch}
-          placeholder="Pesquisar..."
+          placeholder={Environment.INPUT_SEARCH}
           onChange={(e) => switchTextSearch?.(e.target.value)}
         />
       )}
