@@ -18,7 +18,6 @@ type CategoriesWithTotalCount = {
 
 const getAll = async (page = 1, filter = ''): Promise<CategoriesWithTotalCount | Error> => {
   try {
-    // eslint-disable-next-line quotes
     const relativeUrl = `/categories?_page=${page}&_limit=${Environment.LIMIT_OF_LINES}&category_like=${filter}`;
     const { data, headers } = await Api.get(relativeUrl);
 
@@ -38,9 +37,7 @@ const getAll = async (page = 1, filter = ''): Promise<CategoriesWithTotalCount |
 
 const getById = async (id: number): Promise<CategoryDetailProps | Error> => {
   try {
-    // eslint-disable-next-line quotes
-    
-    const { data } = await Api.get(`/categories/${id}`);
+    const { data } = await Api.get(`/category/${id}`);
 
     if (data) {
       return data;
@@ -54,26 +51,39 @@ const getById = async (id: number): Promise<CategoryDetailProps | Error> => {
   }
 };
 
-const create = async (): Promise<any> => {
+const create = async (dados: Omit<CategoryDetailProps, 'id'>): Promise<number | Error> => {
   try {
-    // eslint-disable-next-line quotes
-    
-    const { data } = await Api.get(`/categories/${id}`);
+    const { data } = await Api.post<CategoryDetailProps>('category');
 
     if (data) {
-      return data;
+      return data.id;
     }
 
-    return new Error('Erro ao consultar a categoria.');
+    return new Error('Erro ao criar a categoria.');
 
   } catch (error) {
     console.error(error);
-    return new Error((error as { message: string }).message || 'Erro ao consultar a categoria.');
+    return new Error((error as { message: string }).message || 'Erro ao criar a categoria.');
+  }
 };
 
-const updateById = async (): Promise<any> => {};
+const updateById = async (id: number, data: CategoryDetailProps): Promise<void | Error> => {
+  try {
+    await Api.put(`/category/${id}`, data);
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao atualizar a categoria.');
+  }
+};
 
-const deleteById = async (): Promise<any> => {};
+const deleteById = async (id: number): Promise<any> => {
+  try {
+    await Api.delete(`/category/${id}`);
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao deletar a categoria.');
+  }
+};
 
 export const CategoriesService = {
   getAll,

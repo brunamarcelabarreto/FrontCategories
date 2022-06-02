@@ -6,7 +6,7 @@ import { Environment } from '../../environment';
 
 interface ListingToolProps {
   textSearch?: string;
-  showInputSearch?: boolean;
+  showSearchInput?: boolean;
   switchTextSearch?:(newText: string) => void; 
   newButtonText?: string;
   showNewButton?: boolean;
@@ -15,7 +15,7 @@ interface ListingToolProps {
 
 export const ListingTool: React.FC<ListingToolProps> = ({ 
   textSearch ='',
-  showInputSearch = false,
+  showSearchInput= false,
   switchTextSearch,
   newButtonText= 'Nova',
   showNewButton = 'Novo',
@@ -34,7 +34,7 @@ export const ListingTool: React.FC<ListingToolProps> = ({
       height={theme.spacing(5)} 
       component={Paper}
     >
-      {showInputSearch && (
+      {showSearchInput && (
         <TextField 
           size="small" 
           value={textSearch}
