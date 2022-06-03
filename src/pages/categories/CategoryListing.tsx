@@ -36,6 +36,7 @@ export const CategoryListing: React.FC = () => {
         />
       }
     >
+      <div>{result.}</div>
     </ BasePageLayout>
   );
 

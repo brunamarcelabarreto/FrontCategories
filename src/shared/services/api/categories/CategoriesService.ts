@@ -13,18 +13,19 @@ interface CategoryListProps {
 
 type CategoriesWithTotalCount = {
   data: CategoryListProps[];
-  totalCount: number;
 }
 
-const getAll = async (page = 1, filter = ''): Promise<CategoriesWithTotalCount | Error> => {
+// const getAll = async (): Promise<CategoriesWithTotalCount> => {
+//   try {
+//     const { data } = await Api.get
+//   }
+// }
+const getAll = async (): Promise<CategoriesWithTotalCount | Error> => {
   try {
-    const relativeUrl = `/categories?_page=${page}&_limit=${Environment.LIMIT_OF_LINES}&category_like=${filter}`;
-    const { data, headers } = await Api.get(relativeUrl);
-
+    const { data } = await Api.get('/category');
     if (data) {
       return {
         data,
-        totalCount: Number(headers['x-total-count'] || Environment.LIMIT_OF_LINES),
       };
     }
     return new Error('Erro ao listar as categorias.');
