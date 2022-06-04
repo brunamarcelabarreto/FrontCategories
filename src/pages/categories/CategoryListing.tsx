@@ -13,7 +13,7 @@ export const CategoryListing: React.FC = () => {
   }, [searchParams]); 
 
   useEffect(() => {
-    CategoriesService.getAll()
+    CategoriesService.getAll(search)
       .then((result) => {
         if (result instanceof Error) {
           alert(result.message);
@@ -36,7 +36,6 @@ export const CategoryListing: React.FC = () => {
         />
       }
     >
-      <div>{result.}</div>
     </ BasePageLayout>
   );
 
