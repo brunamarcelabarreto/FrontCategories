@@ -18,9 +18,9 @@ export const AppRoutes = () => {
       },
       { 
         //icon: 'shopping_bag',
-        icon: 'sign_post',
+        icon: 'signpost',
         path: '/categories',
-        label: 'categories',
+        label: 'Categorias',
       }
     ]);
   }, []);

@@ -11,15 +11,10 @@ interface CategoryListProps {
   name: string;
 }
 
-type CategoriesWithTotalCount = {
+export type CategoriesWithTotalCount = {
   data: CategoryListProps[];
 }
 
-// const getAll = async (): Promise<CategoriesWithTotalCount> => {
-//   try {
-//     const { data } = await Api.get
-//   }
-// }
 const getAll = async (): Promise<CategoriesWithTotalCount | Error> => {
   try {
     const { data } = await Api.get('/category');
