@@ -1,18 +1,19 @@
 import { Environment } from '../../../environment';
 import { Api } from '../axios-config';
 
-interface CategoryDetailProps {
+export interface CategoryDetailProps {
   id: number;
   name: string;
 }
 
-interface CategoryListProps {
+export interface CategoryListProps {
   id: number;
   name: string;
 }
 
 export type CategoriesWithTotalCount = {
   data: CategoryListProps[];
+  totalCount: number;
 }
 
 const getAll = async (): Promise<CategoriesWithTotalCount | Error> => {
@@ -21,6 +22,7 @@ const getAll = async (): Promise<CategoriesWithTotalCount | Error> => {
     if (data) {
       return {
         data,
+        totalCount: data.totalCount,
       };
     }
     return new Error('Erro ao listar as categorias.');
