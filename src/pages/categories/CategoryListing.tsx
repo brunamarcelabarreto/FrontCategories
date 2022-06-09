@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ListingTool } from '../../shared/components';
 // import { useDebounce } from '../../shared/hooks';
 import { BasePageLayout } from '../../shared/layouts';
-import { CategoriesService, CategoryListProps } from '../../shared/services/api/categories/CategoriesService';
-
+import { CategoriesService } from '../../shared/services/api/categories/CategoriesService';
 
 interface CategoryListingProps {
   name: string;
@@ -12,23 +11,20 @@ interface CategoryListingProps {
 }
 
 export const CategoryListing = () => {
-  const [searchParams, setSearchParams] = useState('');
   const [result, setResult] = useState<CategoryListingProps[]>([]);
-  console.log(result);
+  const [searchParams, setSearchParams] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [totalCount, setTotalCount] = useState(0);
+  // const { debounce } = useDebounce(300, false);
 
-  // const { debounce }= useDebounce(300, false);
-  const filtered = result.map(({name}) => name);
-  console.log(filtered);
-  const search = useMemo(() => { 
-    const lowerSearch = searchParams.toLowerCase();
-    return filtered.filter((name) => name.toLowerCase().includes(lowerSearch));
-  }, [searchParams]);
+  const search = useMemo(() => {
+    if (!searchParams) return result;
+    return result.filter((category) => {
+      return category.name.toLowerCase().includes(searchParams.toLowerCase());
+    });
+  }, [searchParams, result]);
 
   useEffect(() => {
     setIsLoading(true);
-
     // debounce(() => {
     CategoriesService.getAll()
       .then((result) => {
@@ -36,12 +32,11 @@ export const CategoryListing = () => {
           alert(result.message);
         } else {
           setResult(result.data);
-          setTotalCount(result.totalCount);
+          setIsLoading(false);
         }
       });
     // });
   }, []);
-  console.log(search);
 
   return (
     <BasePageLayout 
@@ -67,7 +62,7 @@ export const CategoryListing = () => {
 
           </TableHead>
           <TableBody>
-            {filtered.map(row => (
+            {search.map(row => (
               <TableRow key={row.id}>
                 <TableCell>Ações</TableCell>
                 <TableCell>{row.name}</TableCell>
@@ -87,17 +82,8 @@ export const CategoryListing = () => {
           </TableFooter>
         </Table>
       </TableContainer>
-
-
-
-      {/* <ul>
-        {search.map((name) => (
-          <li key={name}>
-            {name}
-          </li>
-        ))}
-      </ul> */}
     </ BasePageLayout>
   );
 
 };
+
