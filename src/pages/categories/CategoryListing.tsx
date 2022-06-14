@@ -1,4 +1,5 @@
-import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
+import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
+import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { ListingTool } from '../../shared/components';
 // import { useDebounce } from '../../shared/hooks';
@@ -15,7 +16,9 @@ export const CategoryListing = () => {
   const [searchParams, setSearchParams] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   // const { debounce } = useDebounce(300, false);
-
+  const [page, setPage] = React.useState(2);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
   const search = useMemo(() => {
     if (!searchParams) return result;
     return result.filter((category) => {
@@ -24,7 +27,6 @@ export const CategoryListing = () => {
   }, [searchParams, result]);
 
   useEffect(() => {
-    setIsLoading(true);
     // debounce(() => {
     CategoriesService.getAll()
       .then((result) => {
@@ -38,11 +40,25 @@ export const CategoryListing = () => {
     // });
   }, []);
 
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
-    <BasePageLayout 
+    <BasePageLayout
       title="Categorias"
       toolBar={
-        <ListingTool  
+        <ListingTool
           showSearchInput
           newButtonText='Novo'
           textSearch={searchParams}
@@ -50,16 +66,14 @@ export const CategoryListing = () => {
         />
       }
     >
-      <TableContainer component={Paper} variant="outlined" sx={{ margin: 1, width: 'auto'}}>
+      <TableContainer component={Paper} variant="outlined" sx={{ margin: 1, width: 'auto' }}>
         <Table>
           <TableHead>
-
             <TableRow>
               <TableCell>Ações</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Id</TableCell>
             </TableRow>
-
           </TableHead>
           <TableBody>
             {search.map(row => (
@@ -68,8 +82,7 @@ export const CategoryListing = () => {
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.id}</TableCell>
               </TableRow>
-            ))}  
-
+            ))}
           </TableBody>
           <TableFooter>
             {isLoading && (
@@ -78,12 +91,23 @@ export const CategoryListing = () => {
                   <LinearProgress variant='indeterminate' />
                 </TableCell>
               </TableRow>
-            )}          
+            )}
+            <TableRow>
+              <TableCell colSpan={3}>
+                <TablePagination
+                  component="div"
+                  count={100}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+
+              </TableCell>
+            </TableRow>
           </TableFooter>
         </Table>
       </TableContainer>
     </ BasePageLayout>
   );
-
 };
-
