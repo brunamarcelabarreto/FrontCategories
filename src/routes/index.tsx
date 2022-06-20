@@ -4,6 +4,7 @@ import { useDrawerContext } from '../shared/contexts/DrawerContext';
 import { 
   Dashboard,
   CategoryListing,
+  CategoryEdition,
 } from '../pages';
 
 export const AppRoutes = () => {
@@ -31,7 +32,7 @@ export const AppRoutes = () => {
       <Route path="/home" element={<Dashboard />} />
       
       <Route path="/categories" element={<CategoryListing />} />
-      {/* <Route path="/categories/detail/:id" element={<CategoryListing />} /> */}
+      <Route path="/categories/detail/:id" element={<CategoryEdition />} />
 
       <Route path="*" element= {<Navigate to="/home" />} />
     </Routes>
