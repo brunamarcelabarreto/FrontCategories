@@ -35,6 +35,7 @@ export const CategoryListing = () => {
       });
   }, []);
 
+  
   const handleDelete = (id: number) => {
     if (confirm('Deseja excluir?')) {
       CategoriesService.deleteById(id)
@@ -58,7 +59,7 @@ export const CategoryListing = () => {
       toolBar={
         <ListingTool
           showSearchInput
-          newButtonText='Novo'
+          newButtonText='Nova'
           onClickInNewButton={() => navigate('/categories/detail/nova')}
           textSearch={searchParams}
           switchTextSearch={text => setSearchParams(text)}

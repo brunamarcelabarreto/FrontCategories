@@ -49,12 +49,12 @@ const getById = async (id: number): Promise<CategoryDetailProps | Error> => {
   }
 };
 
-const create = async (dados: Omit<CategoryDetailProps, 'id'>): Promise<number | Error> => {
+const create = async (data: Omit<CategoryDetailProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<CategoryDetailProps>('category');
+    const { data: responseData } = await Api.post<CategoryDetailProps>('category', data);
 
-    if (data) {
-      return data.id;
+    if (responseData) {
+      return responseData.id;
     }
 
     return new Error('Erro ao criar a categoria.');
@@ -67,14 +67,14 @@ const create = async (dados: Omit<CategoryDetailProps, 'id'>): Promise<number | 
 
 const updateById = async (id: number, data: CategoryDetailProps): Promise<void | Error> => {
   try {
-    await Api.put(`/category/${id}`, data);
+    await Api.put(`/category/${id}`, data); 
   } catch (error) {
     console.error(error);
     return new Error((error as { message: string }).message || 'Erro ao atualizar a categoria.');
   }
 };
 
-const deleteById = async (id: number): Promise<any> => {
+const deleteById = async (id: number): Promise<void | Error> => {
   try {
     await Api.delete(`/category/${id}`);
   } catch (error) {
