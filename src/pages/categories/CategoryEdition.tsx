@@ -1,14 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Grid, LinearProgress, Paper } from '@mui/material';
 
 import { DetailTool } from '../../shared/components';
 import { BasePageLayout } from '../../shared/layouts';
+import { UTextField, UForm, useUForm } from '../../shared/forms';
 import { CategoriesService } from '../../shared/services/api/categories/CategoriesService';
-import { Form } from '@unform/web';
-import { UTextField } from '../../shared/forms';
-import { FormHandles } from '@unform/core';
-import { Box, Grid, LinearProgress, Paper } from '@mui/material';
-
 
 interface FormDataProps {
   id: number;
@@ -18,12 +15,10 @@ interface FormDataProps {
 export const CategoryEdition: React.FC = () => {
   const { id = 'nova' } = useParams<'id'>();
   const navigate = useNavigate();
-
-  const formRef = useRef<FormHandles>(null); 
+  const { formRef, save, saveAndClose, isSaveAndClose: isSaveAndClose } = useUForm();
 
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
-
 
   useEffect(() => {
     if(id !== 'nova') {
@@ -32,24 +27,31 @@ export const CategoryEdition: React.FC = () => {
       CategoriesService.getById(idCategory)
         .then((result) => {
           setIsLoading(false);
-
           if(result instanceof Error) {
             alert(result.message);
             navigate('/categories');
           } else {
             setName(result.name);
             console.log(result);
-
             formRef.current?.setData(result);
           }
         });
+    } else {
+      formRef.current?.setData({
+        name: '',
+      });
     }
   }, [id]);
 
   const handleSave = (data: FormDataProps) => {
     setIsLoading(true);
-    console.log('create', data);
-    
+
+    if (data.name.length < 3) {
+      formRef.current?.setFieldError('name', 'O campo precisa ser preenchido');
+      setIsLoading(false);
+      return;
+    }
+
     if (id === 'nova') {
       CategoriesService
         .create(data)
@@ -58,10 +60,13 @@ export const CategoryEdition: React.FC = () => {
           if (result instanceof Error) {
             alert(result.message);
           } else {
-            navigate(`/categories/detail/${result}`);
+            if (isSaveAndClose()) {
+              navigate('/categories');
+            } else {
+              navigate(`/categories/detail/${result}`);
+            }
           }
         });
-
     } else {
       const idCategory = Number(id);
       CategoriesService
@@ -71,8 +76,9 @@ export const CategoryEdition: React.FC = () => {
           if (result instanceof Error) {
             alert(result.message);
           } else {
-            navigate('/categories');
-            console.log('result', result);
+            if (isSaveAndClose()) {
+              navigate('/categories');
+            }
           }
         });
     }
@@ -99,19 +105,19 @@ export const CategoryEdition: React.FC = () => {
       toolBar={
         <DetailTool 
           newButtonText='Nova'
-          showButtonSaveAndReturn
+          showButtonSaveAndClose
           showButtonNew={id !== 'nova'} 
           showButtonDelete={id !== 'nova'} 
 
-          onClickInBack={() => navigate('/categories')}
+          onClickInSave={save}
+          onClickInReturn={() => navigate('/categories')}
           onClickInDelete={() => handleDelete(Number(id))}
-          onClickInSave={() => formRef.current?.submitForm()}
           onClickInNew={() => navigate('/categories/detail/nova')}
-          onClickInSaveAndReturn={() => formRef.current?.submitForm()}
+          onClickInSaveAndClose={saveAndClose}
         />
       }
     > 
-      <Form ref={formRef} onSubmit={handleSave} >
+      <UForm ref={formRef} onSubmit={handleSave} >
         <Box margin={1} display="flex" flex-direction="column" component={Paper} variant="outlined">
           <Grid container direction="column" padding={2} spacing={2}>
 
@@ -135,8 +141,7 @@ export const CategoryEdition: React.FC = () => {
           </Grid>
         </Box>
 
-      </Form>
+      </UForm>
     </BasePageLayout>
   );
-};
-
+}; 

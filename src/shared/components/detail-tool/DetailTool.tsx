@@ -5,45 +5,45 @@ interface DetailToolProps {
   newButtonText?: string;
 
   showButtonSave?: boolean;
-  showButtonSaveAndReturn?: boolean;
+  showButtonSaveAndClose?: boolean;
   showButtonDelete?: boolean;
   showButtonNew?: boolean;
-  showButtonBack?: boolean;
+  showButtonReturn?: boolean;
 
   showButtonSaveLoading?: boolean;
-  showButtonSaveAndReturnLoading?: boolean;
+  showButtonSaveAndCloseLoading?: boolean;
   showButtonDeleteLoading?: boolean;
   showButtonNewLoading?: boolean;
-  showButtonBackLoading?: boolean;
+  showButtonReturnLoading?: boolean;
 
   onClickInSave?: () => void;
-  onClickInSaveAndReturn?: () => void;
+  onClickInSaveAndClose?: () => void;
   onClickInDelete?: () => void;
   onClickInNew?: () => void;
-  onClickInBack?: () => void;
+  onClickInReturn?: () => void;
 }
 
 export const DetailTool: React.FC<DetailToolProps> = ({
   newButtonText = 'Novo',
   
   showButtonSave = true,
-  showButtonSaveAndReturn = false,
+  showButtonSaveAndClose = false,
   showButtonDelete = true,
   showButtonNew = true,
-  showButtonBack = true,
+  showButtonReturn: showButtonReturn = true,
 
   showButtonSaveLoading = false,
-  showButtonSaveAndReturnLoading = false,
+  showButtonSaveAndCloseLoading = false,
   showButtonDeleteLoading = false,
   showButtonNewLoading = false,
-  showButtonBackLoading = false,
+  showButtonReturnLoading: showButtonReturnLoading = false,
 
 
   onClickInSave,
-  onClickInSaveAndReturn,
+  onClickInSaveAndClose: onClickInSaveAndClose,
   onClickInDelete,
   onClickInNew,
-  onClickInBack,
+  onClickInReturn: onClickInReturn,
 
 }) => {
   const lessThanSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -82,12 +82,12 @@ export const DetailTool: React.FC<DetailToolProps> = ({
 
       )}
 
-      {(showButtonSaveAndReturn && !showButtonSaveAndReturnLoading && !lessThanSm && !lessThanMd) && (
+      {(showButtonSaveAndClose && !showButtonSaveAndCloseLoading && !lessThanSm && !lessThanMd) && (
         <Button
           color='primary'
           disableElevation
           variant='outlined'
-          onClick={onClickInSaveAndReturn}
+          onClick={onClickInSaveAndClose}
           endIcon={<Icon>save</Icon>}
         >
           <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
@@ -98,7 +98,7 @@ export const DetailTool: React.FC<DetailToolProps> = ({
         </Button>
       )}
 
-      {(showButtonSaveAndReturnLoading && !lessThanSm && !lessThanMd) && (
+      {(showButtonSaveAndCloseLoading && !lessThanSm && !lessThanMd) && (
         <Skeleton width={170} height={64} />
       )}
 
@@ -142,21 +142,12 @@ export const DetailTool: React.FC<DetailToolProps> = ({
         <Skeleton width={110} height={64} />
       )}
 
-      {/* {
-        (
-          showButtonBack &&
-          (showButtonNew || showButtonDelete || showButtonSave || showButtonSaveAndReturn)
-        ) && (
-          <Divider variant='middle' orientation='vertical' />
-        )
-      } */}
-
-      {(showButtonBack && !showButtonBackLoading) && (
+      {(showButtonReturn && !showButtonReturnLoading) && (
         <Button
           color='primary'
           disableElevation
           variant='outlined'
-          onClick={onClickInBack}
+          onClick={onClickInReturn}
           endIcon={<Icon>arrow_back_ios_new</Icon>}
         >
           <Typography variant='button' whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
@@ -167,7 +158,7 @@ export const DetailTool: React.FC<DetailToolProps> = ({
         </Button>
       )}
       
-      {showButtonBackLoading &&(
+      {showButtonReturnLoading &&(
         <Skeleton width={110} height={64} />
       )}
 

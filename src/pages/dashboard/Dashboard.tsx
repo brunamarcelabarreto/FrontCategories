@@ -12,8 +12,8 @@ export const Dashboard = () => {
       toolBar={(
         <DetailTool 
           showButtonNew
-          showButtonSaveAndReturn
-          showButtonBack
+          showButtonSaveAndClose
+          showButtonReturn
           
         />
       )} 
