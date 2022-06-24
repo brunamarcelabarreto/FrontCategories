@@ -1,3 +1,3 @@
-export * from './menu/MenuLateral';
+export * from './bar/SideBar';
 export * from './listing-tool/ListingTool';
 export * from './detail-tool/DetailTool';

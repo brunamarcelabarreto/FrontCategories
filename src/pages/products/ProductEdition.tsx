@@ -6,20 +6,28 @@ import * as yup from 'yup';
 import { DetailTool } from '../../shared/components';
 import { BasePageLayout } from '../../shared/layouts';
 import { UTextField, UForm, useUForm, UFormErrorsProps } from '../../shared/forms';
-import { CategoriesService } from '../../shared/services/api/categories/CategoriesService';
+import { ProductsService } from '../../shared/services/api/products/ProductsService';
 
 interface FormDataProps {
   id: number;
   name: string;
+  code: string;
+  quantity: number;
+  is_active: boolean;
+  categoryId: number;
 }
 
 const formValidationSchema: yup.SchemaOf<FormDataProps> = yup.object().shape({
   id: yup.number().default(Number),
   name: yup.string().required().min(3),
+  code: yup.string().required(),
+  quantity: yup.number().required().min(1),
+  is_active: yup.boolean().required(),
+  categoryId: yup.number().required(),
 });
 
-export const CategoryEdition: React.FC = () => {
-  const { id = 'nova' } = useParams<'id'>();
+export const ProductEdition: React.FC = () => {
+  const { id = 'novo' } = useParams<'id'>();
   const navigate = useNavigate();
   const { formRef, save, saveAndClose, isSaveAndClose: isSaveAndClose } = useUForm();
 
@@ -27,15 +35,15 @@ export const CategoryEdition: React.FC = () => {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    if(id !== 'nova') {
+    if(id !== 'novo') {
       setIsLoading(true);
-      const idCategory = Number(id);
-      CategoriesService.getById(idCategory)
+      const productId = Number(id);
+      ProductsService.getById(productId)
         .then((result) => {
           setIsLoading(false);
           if(result instanceof Error) {
             alert(result.message);
-            navigate('/categories');
+            navigate('/products');
           } else {
             setName(result.name);
             console.log(result);
@@ -56,8 +64,8 @@ export const CategoryEdition: React.FC = () => {
       .then((validatedData) => {
         setIsLoading(true);
 
-        if (id === 'nova') {
-          CategoriesService
+        if (id === 'novo') {
+          ProductsService
             .create(validatedData)
             .then((result) => {
               setIsLoading(false);
@@ -65,23 +73,23 @@ export const CategoryEdition: React.FC = () => {
                 alert(result.message);
               } else {
                 if (isSaveAndClose()) {
-                  navigate('/categories');
+                  navigate('/products');
                 } else {
-                  navigate(`/categories/detail/${result}`);
+                  navigate(`/products/detail/${result}`);
                 }
               }
             });
         } else {
-          const idCategory = Number(id);
-          CategoriesService
-            .updateById(idCategory, validatedData)
+          const productId = Number(id);
+          ProductsService
+            .updateById(productId, validatedData)
             .then((result) => {
               setIsLoading(false);
               if (result instanceof Error) {
                 alert(result.message);
               } else {
                 if (isSaveAndClose()) {
-                  navigate('/categories');
+                  navigate('/products');
                 }
               }
             });
@@ -99,12 +107,12 @@ export const CategoryEdition: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (confirm('Deseja excluir?')) {
-      CategoriesService.deleteById(id)
+      ProductsService.deleteById(id)
         .then((result) =>{
           if (result instanceof Error) {
             alert(result.message);
           } else {
-            navigate('/categories');
+            navigate('/products');
           }
           alert('Registro deletado com sucesso!');
         }
@@ -114,18 +122,18 @@ export const CategoryEdition: React.FC = () => {
 
   return (
     <BasePageLayout 
-      title={id === 'nova' ? 'Nova Categoria' : name}
+      title={id === 'novo' ? 'Novo Produto' : name}
       toolBar={
         <DetailTool 
-          newButtonText='Nova'
+          newButtonText='Novo'
           showButtonSaveAndClose
-          showButtonNew={id !== 'nova'} 
-          showButtonDelete={id !== 'nova'} 
+          showButtonNew={id !== 'novo'} 
+          showButtonDelete={id !== 'novo'} 
 
           onClickInSave={save}
-          onClickInReturn={() => navigate('/categories')}
+          onClickInReturn={() => navigate('/products')}
           onClickInDelete={() => handleDelete(Number(id))}
-          onClickInNew={() => navigate('/categories/detail/nova')}
+          onClickInNew={() => navigate('/products/detail/novo')}
           onClickInSaveAndClose={saveAndClose}
         />
       }
@@ -142,15 +150,35 @@ export const CategoryEdition: React.FC = () => {
 
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} md={6} lg={4} xl={2}>
-                <UTextField
-                  fullWidth
-                  name='name'
-                  label='Nome' 
-                  disabled={isLoading} 
-                  onChange={e => setName(e.target.value)}
+                <UTextField fullWidth name='name' label='Nome' disabled={isLoading} onChange={e => setName(e.target.value)}
                 />
               </Grid>
             </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} md={6} lg={4} xl={2}>
+                <UTextField fullWidth name='code' label='Código' disabled={isLoading} onChange={e => setName(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} md={6} lg={4} xl={2}>
+                <UTextField fullWidth name='quantity' label='Quantidade' disabled={isLoading} onChange={e => setName(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} md={6} lg={4} xl={2}>
+                <UTextField fullWidth name='is_active' label='Ativo' disabled={isLoading} onChange={e => setName(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} md={6} lg={4} xl={2}>
+                <UTextField fullWidth name='categoryId' label='Id da Categoria' disabled={isLoading} onChange={e => setName(e.target.value)}
+                />
+              </Grid>
+            </Grid>  
+            
           </Grid>
         </Box>
 

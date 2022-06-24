@@ -5,7 +5,7 @@ import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 import { useAppThemeContext } from '../../contexts/UseContext';
 import { Box } from '@mui/system';
 
-interface MenuLateralProps {
+interface SideBarProps {
   children: React.ReactNode
 }
 
@@ -39,7 +39,7 @@ export const ListItemLink: React.FC<ListItemLinkProps> = ({ to, icon, label, onC
 };
 
 // eslint-disable-next-line react/prop-types
-export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
+export const SideBar: React.FC<SideBarProps> = ({ children }) => {
   const theme = useTheme();
   const lessThanSm = useMediaQuery(theme.breakpoints.down('sm'));
 

@@ -5,6 +5,8 @@ import {
   Dashboard,
   CategoryListing,
   CategoryEdition,
+  ProductListing,
+  ProductEdition,
 } from '../pages';
 
 export const AppRoutes = () => {
@@ -18,10 +20,14 @@ export const AppRoutes = () => {
         label: 'Home',
       },
       { 
-        //icon: 'shopping_bag',
         icon: 'signpost',
         path: '/categories',
         label: 'Categorias',
+      },
+      {
+        icon: 'shopping_bag',
+        path: '/products',
+        label: 'Produtos',
       }
     ]);
   }, []);
@@ -30,12 +36,14 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/home" element={<Dashboard />} />
-      
       <Route path="/categories" element={<CategoryListing />} />
       <Route path="/categories/detail/:id" element={<CategoryEdition />} />
-
+      <Route path="/products" element={<ProductListing />} />
+      <Route path="/products/detail/:id" element={<ProductEdition />} />
       <Route path="*" element= {<Navigate to="/home" />} />
     </Routes>
+    
+
   );
 };
 
