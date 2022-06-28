@@ -9,6 +9,7 @@ interface DetailToolProps {
   showButtonDelete?: boolean;
   showButtonNew?: boolean;
   showButtonReturn?: boolean;
+  showButtonSearch?: boolean;
 
   showButtonSaveLoading?: boolean;
   showButtonSaveAndCloseLoading?: boolean;

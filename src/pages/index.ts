@@ -3,3 +3,4 @@ export * from './categories/CategoryListing';
 export * from './categories/CategoryEdition';
 export * from './products/ProductListing';
 export * from './products/ProductEdition';
+export * from './products-by-category/ProductsByCategory';

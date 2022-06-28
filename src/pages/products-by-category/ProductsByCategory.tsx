@@ -1,9 +1,11 @@
-import { Icon, IconButton, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ListingTool } from '../../shared/components';
-import { BasePageLayout } from '../../shared/layouts';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ProductsService } from '../../shared/services/api/products/ProductsService';
+
+import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
+import { BasePageLayout } from '../../shared/layouts';
+import { DetailTool, ListingTool } from '../../shared/components';
+
 
 interface ProductListingProps {
   id: number;
@@ -14,48 +16,32 @@ interface ProductListingProps {
   categoryId: number;
 }
 
-export const ProductListing = () => {
-  const [result, setResult] = useState<ProductListingProps[]>([]);
+export const ProductsByCategory= () => {
+  const { id } = useParams<'id'>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [resultByCategory, setResultByCategory] = useState<ProductListingProps[]>([]);
   const [searchParams, setSearchParams] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
+  
   const search = useMemo(() => {
-    if (!searchParams) return result;
-    return result.filter((product) => {
-      return product.name.toLowerCase().includes(searchParams.toLowerCase());
+    if (!searchParams) return resultByCategory;
+    return resultByCategory.filter((products) => {
+      return products.name.toLowerCase().includes(searchParams.toLowerCase());
     });
-  }, [searchParams, result]);
+  }, [searchParams, resultByCategory]);
 
   useEffect(() => {
-    ProductsService.getAll()
-      .then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
+    ProductsService.getByCategoryId(Number(id))
+      .then((resultByCategory) => {
+        console.log(resultByCategory);
+        if (resultByCategory instanceof Error) {
+          alert(resultByCategory.message);
         } else {
-          setResult(result.data);
+          setResultByCategory(resultByCategory.data);
           setIsLoading(false);
         }
       });
   }, []);
-
-  
-  const handleDelete = (id: number) => {
-    if (confirm('Deseja excluir?')) {
-      ProductsService.deleteById(id)
-        .then((result) =>{
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            setResult(oldRows => [
-              ...oldRows.filter(((oldRow: { id: number; }) => oldRow.id !== id),
-              )]);
-          }
-          alert('Registro deletado com sucesso!');
-        }
-        );
-    }
-  };
 
   return (
     <BasePageLayout
@@ -64,9 +50,9 @@ export const ProductListing = () => {
         <ListingTool
           showSearchInput
           newButtonText='Novo'
-          onClickInNewButton={() => navigate('/products/detail/novo')}
           textSearch={searchParams}
           switchTextSearch={text => setSearchParams(text)}
+          onClickInNewButton={() => navigate('/products/detail/novo')}
         />
       }
     >
@@ -74,7 +60,6 @@ export const ProductListing = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Ações</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Código</TableCell>
               <TableCell>Quantidade</TableCell>
@@ -85,14 +70,6 @@ export const ProductListing = () => {
           <TableBody>
             {search.map(row => (
               <TableRow key={row.id}>
-                <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
-                    <Icon>delete</Icon>
-                  </IconButton>
-                  <IconButton size="small" onClick={() => navigate(`/products/detail/${row.id}`)}>
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.code}</TableCell>
                 <TableCell>{row.quantity}</TableCell>
@@ -118,4 +95,5 @@ export const ProductListing = () => {
       </TableContainer>
     </ BasePageLayout>
   );
-};
+}; 
+

@@ -11,7 +11,7 @@ import { ProductsService } from '../../shared/services/api/products/ProductsServ
 interface FormDataProps {
   id: number;
   name: string;
-  code: string;
+  code: number;
   quantity: number;
   is_active: boolean;
   categoryId: number;
@@ -20,7 +20,7 @@ interface FormDataProps {
 const formValidationSchema: yup.SchemaOf<FormDataProps> = yup.object().shape({
   id: yup.number().default(Number),
   name: yup.string().required().min(3),
-  code: yup.string().required(),
+  code: yup.number().required(),
   quantity: yup.number().required().min(1),
   is_active: yup.boolean().required(),
   categoryId: yup.number().required(),
@@ -46,7 +46,6 @@ export const ProductEdition: React.FC = () => {
             navigate('/products');
           } else {
             setName(result.name);
-            console.log(result);
             formRef.current?.setData(result);
           }
         });

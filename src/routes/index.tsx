@@ -7,6 +7,7 @@ import {
   CategoryEdition,
   ProductListing,
   ProductEdition,
+  ProductsByCategory,
 } from '../pages';
 
 export const AppRoutes = () => {
@@ -38,6 +39,7 @@ export const AppRoutes = () => {
       <Route path="/home" element={<Dashboard />} />
       <Route path="/categories" element={<CategoryListing />} />
       <Route path="/categories/detail/:id" element={<CategoryEdition />} />
+      <Route path="/category/detail/:id" element={<ProductsByCategory />} />
       <Route path="/products" element={<ProductListing />} />
       <Route path="/products/detail/:id" element={<ProductEdition />} />
       <Route path="*" element= {<Navigate to="/home" />} />

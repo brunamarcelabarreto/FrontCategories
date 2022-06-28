@@ -72,7 +72,7 @@ export const CategoryListing = () => {
             <TableRow>
               <TableCell>Ações</TableCell>
               <TableCell>Nome</TableCell>
-              <TableCell>Id</TableCell>
+              <TableCell>Id da Categoria</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -84,6 +84,9 @@ export const CategoryListing = () => {
                   </IconButton>
                   <IconButton size="small" onClick={() => navigate(`/categories/detail/${row.id}`)}>
                     <Icon>edit</Icon>
+                  </IconButton>
+                  <IconButton size="small" onClick={() => navigate(`/category/detail/${row.id}`)}>
+                    <Icon>search</Icon>
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.name}</TableCell>

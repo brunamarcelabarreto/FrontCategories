@@ -3,7 +3,7 @@ import { Api } from '../axios-config';
 export interface ProductDetailProps {
   id: number;
   name: string;
-  code: string;
+  code: number;
   quantity: number;
   is_active: boolean;
   categoryId: number;
@@ -12,7 +12,7 @@ export interface ProductDetailProps {
 export interface ProductListProps {
   id: number;
   name: string;
-  code: string;
+  code: number;
   quantity: number;
   is_active: boolean;
   categoryId: number;
@@ -20,7 +20,7 @@ export interface ProductListProps {
 
 export type ProductsWithTotalCount = {
   data: ProductListProps[];
-  totalCount: number;
+  totalCount?: number;
 }
 
 const getAll = async (): Promise<ProductsWithTotalCount | Error> => {
@@ -90,10 +90,27 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
+const getByCategoryId = async (id: number): Promise<ProductsWithTotalCount | Error> => {
+  try {
+    const { data } = await Api.get(`/category/detail/${id}`);
+
+    if (data) {
+      return {data};
+    }
+    return new Error('Erro ao consultar o produto.');
+
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao consultar o produto.');
+  }
+};
+
+
 export const ProductsService = {
   getAll,
   create,
   getById,
   updateById,
   deleteById,
+  getByCategoryId,
 };

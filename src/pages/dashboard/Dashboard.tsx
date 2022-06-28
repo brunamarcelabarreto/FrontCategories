@@ -1,5 +1,3 @@
-
-import { DetailTool } from '../../shared/components';
 import { BasePageLayout } from '../../shared/layouts';
 
 
@@ -7,17 +5,7 @@ import { BasePageLayout } from '../../shared/layouts';
 export const Dashboard = () => {
 
   return (
-    <BasePageLayout
-      title='Página inicial' 
-      toolBar={(
-        <DetailTool 
-          showButtonNew
-          showButtonSaveAndClose
-          showButtonReturn
-          
-        />
-      )} 
-    >
+    <BasePageLayout title='Página inicial'>
       Testando
 
     </BasePageLayout>
