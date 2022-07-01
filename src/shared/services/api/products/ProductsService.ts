@@ -20,8 +20,21 @@ export interface ProductListProps {
 
 export type ProductsWithTotalCount = {
   data: ProductListProps[];
-  totalCount?: number;
 }
+
+const countAll = async (): Promise<any | Error> => {
+  try {
+    const { data } = await Api.get('/count-product');
+    if (data) {
+      return data;
+    }
+    return new Error('Erro ao contar os produtos.');
+
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao contar as categorias.');
+  }
+};
 
 const getAll = async (): Promise<ProductsWithTotalCount | Error> => {
   try {
@@ -29,7 +42,6 @@ const getAll = async (): Promise<ProductsWithTotalCount | Error> => {
     if (data) {
       return {
         data,
-        totalCount: data.totalCount,
       };
     }
     return new Error('Erro ao listar os produtos.');
@@ -107,6 +119,7 @@ const getByCategoryId = async (id: number): Promise<ProductsWithTotalCount | Err
 
 
 export const ProductsService = {
+  countAll,
   getAll,
   create,
   getById,

@@ -13,8 +13,21 @@ export interface CategoryListProps {
 
 export type CategoriesWithTotalCount = {
   data: CategoryListProps[];
-  totalCount: number;
 }
+
+const countAll = async (): Promise<any | Error> => {
+  try {
+    const { data } = await Api.get('/count-category');
+    if (data) {
+      return data;
+    }
+    return new Error('Erro ao contar as categorias.');
+
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao contar as categorias.');
+  }
+};
 
 const getAll = async (): Promise<CategoriesWithTotalCount | Error> => {
   try {
@@ -22,7 +35,6 @@ const getAll = async (): Promise<CategoriesWithTotalCount | Error> => {
     if (data) {
       return {
         data,
-        totalCount: data.totalCount,
       };
     }
     return new Error('Erro ao listar as categorias.');
@@ -84,6 +96,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
 };
 
 export const CategoriesService = {
+  countAll,
   getAll,
   create,
   getById,

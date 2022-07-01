@@ -4,6 +4,7 @@ import { useDrawerContext } from '../../contexts';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 import { useAppThemeContext } from '../../contexts/UseContext';
 import { Box } from '@mui/system';
+import { PermIdentity } from '@mui/icons-material';
 
 interface SideBarProps {
   children: React.ReactNode
@@ -52,12 +53,12 @@ export const SideBar: React.FC<SideBarProps> = ({ children }) => {
         <Box width={theme.spacing(28)} display="flex" flexDirection="column">
           <Box width="100%" height={theme.spacing(20)} display="flex" alignItems="center" justifyContent="center">
             <Avatar sx={{
-              height: theme.spacing(8),
-              width: theme.spacing(8),
+              height: theme.spacing(12),
+              width: theme.spacing(12),
               color: '#000000',
-              bgcolor: 'rgb(143,188,143)',
-            }} variant="rounded">
-              <MenuIcon />
+              bgcolor: '#a6a8a6',
+            }}>
+              <PermIdentity sx={{ fontSize: 80 }} />
             </Avatar>
           </Box>
 
@@ -76,7 +77,6 @@ export const SideBar: React.FC<SideBarProps> = ({ children }) => {
               ))}
             </List>
           </Box>
-
         
           <Box>
             <List component="nav">
